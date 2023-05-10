@@ -1,4 +1,4 @@
-package cdds
+package gocdds
 
 import "unsafe"
 

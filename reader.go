@@ -1,7 +1,7 @@
-package cdds
+package gocdds
 
 /*
-#cgo CFLAGS: -I/usr/local/include/ddsc
+#cgo CFLAGS: -I/usr/include
 #cgo LDFLAGS: -lddsc
 #include "ddsc/dds.h"
 */
@@ -82,7 +82,7 @@ func (r *Reader) BlockAllocRead(bufsz int, maxsz uint32, take bool) (*Array, int
 }
 
 func (r *Reader) AllocRead(bufsz int, maxsz uint32, take bool) (*Array, int, error) {
-	// this is not GCed by Golang, maybe
+	// this is not Garbage Collected by Golang, maybe
 	samples := r.allocator.AllocArray(maxsz)
 	loc := samples.At(0)
 	var ret C.dds_entity_t
@@ -98,12 +98,12 @@ func (r *Reader) AllocRead(bufsz int, maxsz uint32, take bool) (*Array, int, err
 }
 
 func (r *Reader) Alloc(bufsz int) *Array {
-	// this is not GCed by Golang, maybe
+	// this is not Garbage Collected by Golang, maybe
 	return r.allocator.AllocArray(uint32(bufsz))
 }
 
 func (r *Reader) ReadWithBuff(samples *Array, take bool) (int, error) {
-	// this is not GCed by Golang, maybe
+	// this is not Garbage Collected by Golang, maybe
 	if samples == nil {
 		panic("buffer was not allocated")
 	}
@@ -127,6 +127,12 @@ func (r *Reader) CreateReadCondition(mask ReadConditionState) *ReadCondition {
 	}
 	r.readConditions = append(r.readConditions, rd)
 	return &rd
+}
+
+func (r *Reader) Free(sampleHead unsafe.Pointer) {
+	if r.allocator != nil {
+		r.allocator.Free(sampleHead)
+	}
 }
 
 func (r *Reader) delete() error {

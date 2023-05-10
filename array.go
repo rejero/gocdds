@@ -1,7 +1,7 @@
-package cdds
+package gocdds
 
 /*
-#cgo CFLAGS: -I/usr/local/include/ddsc
+#cgo CFLAGS: -I/usr/include
 #cgo LDFLAGS: -lddsc
 #include "ddsc/dds.h"
 */

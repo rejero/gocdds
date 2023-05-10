@@ -1,7 +1,7 @@
-package cdds
+package gocdds
 
 /*
-#cgo CFLAGS: -I/usr/local/include/ddsc
+#cgo CFLAGS: -I/usr/include
 #cgo LDFLAGS: -lddsc
 #include "ddsc/dds.h"
 */
@@ -48,7 +48,7 @@ func (a *RawAllocator) AllFree() {
 	a.mut.Lock()
 	defer a.mut.Unlock()
 
-	for array, _ := range a.allockedList {
+	for array := range a.allockedList {
 		C.dds_free(array)
 	}
 	a.allockedList = make(map[unsafe.Pointer]unsafe.Pointer)
@@ -94,7 +94,7 @@ func (a *SampleAllocator) allocInfo(num uint32) unsafe.Pointer /*error*/ {
 	return allocked
 }
 
-//override
+// override
 func (a *SampleAllocator) AllocArray(num uint32) *Array {
 	a.mut.Lock()
 	defer a.mut.Unlock()
@@ -104,7 +104,7 @@ func (a *SampleAllocator) AllocArray(num uint32) *Array {
 	return NewArray(sampleHead, infosHead, num, a.elmSize)
 }
 
-//override
+// override
 func (a *SampleAllocator) Free(sampleHead unsafe.Pointer) /*error*/ {
 	a.mut.Lock()
 	defer a.mut.Unlock()
@@ -118,7 +118,7 @@ func (a *SampleAllocator) Free(sampleHead unsafe.Pointer) /*error*/ {
 	C.dds_free(infosHead)
 }
 
-//override
+// override
 func (a *SampleAllocator) AllFree() {
 	a.mut.Lock()
 	defer a.mut.Unlock()

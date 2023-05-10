@@ -1,8 +1,8 @@
 package main
 
 /*
-#cgo CFLAGS: -I/usr/local/include/ddsc
-#cgo LDFLAGS: -lddsc ${SRCDIR}/../RoundTrip.c.o
+#cgo CFLAGS: -I/usr/include
+#cgo LDFLAGS: -lddsc ${SRCDIR}/../CMakeFiles/RoundtripPing.dir/RoundTrip.c.o
 #include "ddsc/dds.h"
 #include "../RoundTrip.h"
 #define US_IN_ONE_SEC 1000000LL
@@ -14,7 +14,7 @@ import (
 	"time"
 	"unsafe"
 
-	cdds "github.com/ami-GS/go-cdds"
+	cdds "gocdds"
 )
 
 const MAX_SAMPLES = 100
